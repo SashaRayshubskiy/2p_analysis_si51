@@ -53,7 +53,7 @@ while(npts > 0)
     
     colorindex = colorindex+1;
     
-    intens = [intens; itrace'];
+    intens = [intens; itrace']; % test comment
     roi_points{nroi} = [xv, yv];
     nroi = nroi + 1;
 end
