@@ -7,8 +7,9 @@ nframes = size(a_data, 3);
 f = figure;
 subplot(1,3,1)
 imshow(refimg, [], 'InitialMagnification', 'fit')
-caxis([0 1600]); 
-%colorbar;
+%caxis([0 4000]);
+caxis([32000 34000]);
+% colorbar;
 hold on;
 
 [ysize, xsize] = size(refimg(:,:,1));
@@ -19,7 +20,6 @@ order    = [ rgb('Blue'); rgb('Green'); rgb('Red'); rgb('Black'); rgb('Purple');
 nroi = 1;
 intens = [];
 [x, y] = meshgrid(1:xsize, 1:ysize);
-
 t = [0:nframes-1]./FR;
 
 while(npts > 0)
@@ -36,7 +36,7 @@ while(npts > 0)
     plot(xv, yv, 'Linewidth', 1,'Color',currcolor);
     text(mean(xv),mean(yv),num2str(colorindex+1),'Color',currcolor,'FontSize',12);
         
-    tmp = squeeze(sum(sum(a_data.*repmat(inpoly, [1, 1, nframes]))))/sum(inpoly(:));
+    tmp = squeeze(sum(sum(double(a_data).*repmat(inpoly, [1, 1, nframes]))))/sum(inpoly(:));
     baseline = repmat(mean(tmp), [1 1 size(tmp,2)]);
     itrace = (tmp-baseline) ./ baseline;
     
@@ -45,7 +45,7 @@ while(npts > 0)
     plot(t, itrace, 'Color', currcolor, 'LineWidth', 2);
     
     xlim([0 max(t)]);
-    ylim([-0.2 0.75]);
+    %ylim([-0.2 0.75]);
     xlabel('Time (s)', 'FontSize', 14, 'FontWeight', 'bold');
     ylabel('dF/F');
     set(gca, 'FontSize', 14 );
@@ -53,14 +53,10 @@ while(npts > 0)
     
     colorindex = colorindex+1;
     
-    intens = [intens; itrace']; % test comment
+    intens = [intens; itrace']; 
     roi_points{nroi} = [xv, yv];
     nroi = nroi + 1;
 end
- 
-global file_writer_cnt;
 
-saveas(f, [fname '_' num2str(file_writer_cnt) '.fig']);
-saveas(f, [fname '_' num2str(file_writer_cnt) '.png'], 'png');
-
-file_writer_cnt = file_writer_cnt + 1;
+saveas(f, [fname '.fig']);
+saveas(f, [fname '.png']);
