@@ -6,14 +6,39 @@
 %datapath = 'B:\Sasha\first_test_12_02_2015\';
 %datafile = 'LH_80_volumes_14_slices_00011.tif';
 
+datapath = '/data/drive_fast/sasha/pebbled_gcamp3_first_try/';
+datafile = 'test_volume_grab_256x128_60planes_2.25micron_step_1.81vps_40volumes_00001.tif';
+
 analysis_path = [datapath 'analysis'];
 
 if(~exist(analysis_path, 'dir'))
     mkdir(analysis_path);
 end
 
-[header, aOut,imgInfo] = scanimage.util.opentif([datapath '\' datafile]);
+sid = 0;
+trial_str = 'NaturalOdor';
 
+%tic; [header, aOut,imgInfo] = scanimage.util.opentif([datapath '/' datafile]); toc
+tic; aOut = open_tif_fast([datapath '/' datafile]); toc
+
+for tt = 1:size(trial_types,2)
+    
+    search_path = ['*' trial_types{tt} '*'];
+    files = dir([search_path '.tif']);
+        
+    for i=1:size(files,1)
+        filename = files(i).name;
+        
+        info = imfinfo(filename);
+        num_images = numel(info);
+        for k = 1:num_images-2
+            data(tt,i,:,:,k) = double(imread(filename, k));
+        end
+    end
+    
+    avg_data{tt} = squeeze(mean(squeeze(data(tt,:,:,:,:))));
+end
+end
 %%
 VOLUMES = 80;
 PLANES = 16;
