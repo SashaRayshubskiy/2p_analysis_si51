@@ -1,4 +1,5 @@
 function [ aOut ] = open_tif_fast( tifpath )
+% aOut = [ numLines, numPixels, num_channels, num_planes, num_volumes ]
 
 % Open tiff file
 tifObj = Tiff(tifpath,'r');

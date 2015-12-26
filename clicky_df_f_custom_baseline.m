@@ -1,4 +1,4 @@
-function [roi_points, intens] = clicky_df_f(a_data, FR, fname);
+function [roi_points, intens] = clicky_df_f_custom_baseline(a_data, FR, baseline_start, baseline_end, fname);
 
 refimg = mean(a_data, 3);
 
@@ -7,7 +7,7 @@ nframes = size(a_data, 3);
 f = figure;
 subplot(1,3,1)
 imshow(refimg, [], 'InitialMagnification', 'fit')
-caxis([0 5000]);
+caxis([0 3000]);
 %caxis([32000 34000]);
 % colorbar;
 hold on;
@@ -36,8 +36,11 @@ while(npts > 0)
     plot(xv, yv, 'Linewidth', 1,'Color',currcolor);
     text(mean(xv),mean(yv),num2str(colorindex+1),'Color',currcolor,'FontSize',12);
         
+    bline_s = floor(baseline_start*FR);
+    bline_e = floor(baseline_end*FR);
+    
     tmp = squeeze(sum(sum(double(a_data).*repmat(inpoly, [1, 1, nframes]))))/sum(inpoly(:));
-    baseline = repmat(mean(tmp), [1 1 size(tmp,2)]);
+    baseline = repmat(mean(tmp(bline_s:bline_e)), [1 1 size(tmp,2)]);
     itrace = (tmp-baseline) ./ baseline;
     
     ax1 = subplot(1,3,2:3); % plot the trace

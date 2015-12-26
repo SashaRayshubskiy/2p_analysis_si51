@@ -11,6 +11,8 @@ figure
 subplot(1,3,1)
 imshow(refimg, [], 'InitialMagnification', 'fit')
 hold on;
+caxis([0 5000]);
+colorbar;
 
 [ysize, xsize] = size(refimg(:,:,1)); 
 npts = 1;

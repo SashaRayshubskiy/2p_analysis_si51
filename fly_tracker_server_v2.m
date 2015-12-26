@@ -1,4 +1,4 @@
-function [] = fly_tracker_server()
+function [] = fly_tracker_server_v2()
 % fly_tracker_server Summary of this function goes here
 
 % example for using the ScanImage API to set up a grab
@@ -27,7 +27,6 @@ while 1
         
     data = fscanf(t, '%s');
     data = strtrim(data);
-    fprintf(t, 'SI51_Acq');
     disp(data);
     
     if( strcmp(data,'END_OF_SESSION') == 1 )
@@ -37,9 +36,13 @@ while 1
     hSI.hScan2D.logFileStem = data;      % set the base file name for the Tiff file    
     hSI.hChannels.loggingEnable = true;     % enable logging   
     hSI.hScan2D.logFileCounter = cur_file_count; 
+    hSI.extTrigEnable = true;               % Enable external trigger, the external trigger button should turn green.
     hSI.startGrab();                        % start the grab
-
     cur_file_count = cur_file_count + 1;
+    
+    % Signal back to the fly tracker client that it can start daq and image
+    % acquisition.
+    fprintf(t, 'SI51_Acq');
 end
 
 % close the socket
