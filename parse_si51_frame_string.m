@@ -1,4 +1,4 @@
-function [ num_channels, num_planes, num_volumes ] = parse_si51_frame_string( frameString )
+function [ num_channels, num_planes, num_volumes ] = parse_si51_frame_string( frameString );
 
 cc = strsplit(frameString, '\n');
 

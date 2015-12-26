@@ -1,5 +1,5 @@
 function [ aOut ] = open_tif_fast( tifpath )
-% aOut = [ numLines, numPixels, num_channels, num_planes, num_volumes ]
+% Output: [Lines, Pixels, Channels, Planes, Volumes]
 
 % Open tiff file
 tifObj = Tiff(tifpath,'r');
@@ -12,9 +12,10 @@ while ~tifObj.lastDirectory()
 end
 
 frameString = tifObj.getTag('ImageDescription');
-[ num_channels, num_planes, num_volumes ] = parse_si51_frame_string( frameString );
-
-%eval(frameString);
+%[ num_channels, num_planes, num_volumes ] = parse_si51_frame_string( frameString );
+num_channels = si51_frame_string_get_value_for_key(frameString, 'hChannels.channelsActive');
+num_planes = si51_frame_string_get_value_for_key(frameString, 'hFastZ.numFramesPerVolume');
+num_volumes = si51_frame_string_get_value_for_key(frameString, 'hFastZ.numVolumes');
 
 % Get TIFF information
 numLines = tifObj.getTag('ImageLength');
@@ -36,8 +37,6 @@ end
 
 aOut = reshape(aOut_tmp, [numLines,numPixels, num_channels,num_planes,num_volumes]);
 
-% Visualize data
-%for i=1:numImg;imagesc(Aout(:,:,i)),pause(0.01);end
-
+tifObj.close();
 end
 
