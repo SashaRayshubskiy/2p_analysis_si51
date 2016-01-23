@@ -7,7 +7,12 @@ tifObj = Tiff(tifpath,'r');
 % Iterate over the tiff file to find out how many images there are
 numImg = 1;
 while ~tifObj.lastDirectory()
-    tifObj.nextDirectory();
+
+    try
+        tifObj.nextDirectory();
+    catch
+        break;
+    end
     numImg = numImg + 1;
 end
 
