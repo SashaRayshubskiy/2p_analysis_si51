@@ -33,7 +33,7 @@ hh = fill([ first_stim_t first_stim_t last_stim_t last_stim_t ],[y_min y_max y_m
 set(gca,'children',circshift(get(gca,'children'),-1));
 set(hh, 'EdgeColor', 'None');
 
-xlim([0, total_time]);
+xlim([0, total_time]);currcolor_avg    = order_avg(1+mod(colorindex,size(order_single,1)),:);
 xlabel('Time (s)');
 ylabel('Velocity (au/s)');
 

@@ -15,7 +15,6 @@ hold on;
 [ysize, xsize] = size(refimg(:,:,1));
 npts = 1;
 colorindex = 0;
-
 order    = [ rgb('Blue'); rgb('Green'); rgb('Red'); rgb('Black'); rgb('Purple'); rgb('Brown'); rgb('Indigo'); rgb('DarkRed') ];
 nroi = 1;
 intens = [];
