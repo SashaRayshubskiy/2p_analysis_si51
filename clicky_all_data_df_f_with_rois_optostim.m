@@ -97,8 +97,6 @@ set(hh, 'EdgeColor', 'None');
 intens = intens';
 title([title_str ': avg of ' num2str(size(a_data,1)) ' trials'], 'Interpreter','none');
 
-
-
 global file_writer_cnt;
 
 saveas(f, [fname '_' num2str(file_writer_cnt) '.fig']);
