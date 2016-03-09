@@ -7,7 +7,7 @@ nframes = size(a_data, 3);
 f = figure;
 subplot(1,3,1)
 imshow(refimg, [], 'InitialMagnification', 'fit')
-caxis([0 5000]);
+caxis([0 200]);
 %caxis([32000 34000]);
 % colorbar;
 hold on;

@@ -14,7 +14,7 @@ end
 %datapath = 'B:\Sasha\first_test_12_02_2015\';
 %datafile = 'LH_80_volumes_14_slices_00011.tif';
 
-datapath = 'B:\Sasha\160308_nsyb_83blexA_32\';
+datapath = 'B:\Sasha\160308_nsyb_01\';
 
 analysis_path = [datapath 'analysis'];
 
@@ -22,18 +22,19 @@ if(~exist(analysis_path, 'dir'))
     mkdir(analysis_path);
 end
 
-sid = 1;
+sid = 7;
 trial_str = 'RightOdor';
     
 search_path = [datapath '*' trial_str '*_sid_' num2str(sid) '_*.tif'];
 files = dir(search_path);
         
-for i=1:size(files,1)
+for i=2:size(files,1)
     filename = files(i).name;
     
     filepath = [datapath slash filename];
     
-    DATA_ALL(i,:,:,:,:,:) = open_tif_fast(filepath);
+    cur_data = open_tif_fast_single_plane(filepath);
+    DATA_ALL(i,:,:,:,:) = cur_data;
     disp(['Loaded file: ' filepath]);
 end
 
@@ -45,8 +46,11 @@ AVG_DATA = squeeze(mean(squeeze(DATA)));
 % DATA = DATA(:,:,:,3:end);
 
 FR = 104.32;
-VOLUMES = size(DATA,5);
-PLANES = size(DATA, 4);
+dt = 10;
+data_end = 670;
+DATA_new = squeeze(mean(reshape(DATA(:,:,:,1:data_end), [ size(DATA,1), size(DATA,2), size(DATA,3) dt, size(DATA(:,:,:,1:data_end),4)/dt ]),4));
+DATA = DATA_new;
+FRAMES = size(DATA,4);
 
 SUBAXIS_ROW = 2;
 SUBAXIS_COL = 2;
@@ -70,6 +74,14 @@ end
 
 saveas(f, [analysis_path '\' datafile '_mean_slices_in_volume.fig']);
 saveas(f, [analysis_path '\' datafile '_mean_slices_in_volume.png']); 
+
+
+%%
+TPRE = 3.0;
+STIM = 0.5;
+fname = [analysis_path '\sid_ ' num2str(sid) '_' trial_str '_clicky_df_f_' num2str(file_writer_cnt)];
+[roi_points, intens] = clicky_all_data_df_f(double(DATA), FR/dt, TPRE, STIM, fname);
+file_writer_cnt = file_writer_cnt + 1;
 
 %% Get response timeocourse in ROI
 REFERENCE_PLANE = 7;

@@ -1,10 +1,12 @@
 %% P/z
 
-P0 = 10.0;
-z0 = 200;
+P0 = 6.0;
+z0 = 0;
 z = [0:500];
 
-Lz = [100:25:500];
+% Lz = [40:5:200];
+Lz = [140];
+
 
 figure;
 
@@ -17,5 +19,6 @@ end
 legend('show', 'Location', 'northwest');
 xlabel('Depth (microns)');
 ylabel('Power (% of max)');
-ylim([0 30]);
+ylim([0 50]);
 title('ScanImage Lz values for Power vs Depth P = P0 * exp((z-z0)/Lz');
+grid on;

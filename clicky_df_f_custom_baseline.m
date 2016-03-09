@@ -7,7 +7,7 @@ nframes = size(a_data, 3);
 f = figure;
 subplot(1,3,1)
 imshow(refimg, [], 'InitialMagnification', 'fit')
-caxis([0 3000]);
+caxis([0 700]);
 %caxis([32000 34000]);
 % colorbar;
 hold on;
@@ -36,7 +36,7 @@ while(npts > 0)
     plot(xv, yv, 'Linewidth', 1,'Color',currcolor);
     text(mean(xv),mean(yv),num2str(colorindex+1),'Color',currcolor,'FontSize',12);
         
-    bline_s = floor(baseline_start*FR);
+    bline_s = 1;
     bline_e = floor(baseline_end*FR);
     
     tmp = squeeze(sum(sum(double(a_data).*repmat(inpoly, [1, 1, nframes]))))/sum(inpoly(:));

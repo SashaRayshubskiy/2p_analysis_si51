@@ -10,7 +10,7 @@ nframes = size(avg_data, 3);
 f = figure;
 subplot(1,3,1)
 imshow(refimg, [], 'InitialMagnification', 'fit')
-caxis([0 1600]); 
+caxis([0 1500]); 
 %colorbar;
 hold on;
 

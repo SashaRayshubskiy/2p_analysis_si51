@@ -58,11 +58,16 @@ while 1
     trial_time = str2num(s_str{10});
     
     % Set volumes to scan
-    volumes_per_second = hSI.hRoiManager.scanVolumeRate;
-    disp(['VPS: ' num2str( volumes_per_second )]);
+    hSI.hStackManager.numSlices = 1;
+    
+    frames_per_second = hSI.hRoiManager.scanFrameRate;
+    disp(['FPS: ' num2str( frames_per_second )]);
 
-    hSI.hFastZ.numVolumes = int32(ceil( trial_time * volumes_per_second ));
-    disp(['Number of volumes: ' num2str( hSI.hFastZ.numVolumes )]);
+    hSI.hStackManager.framesPerSlice = int32(ceil( trial_time * frames_per_second ));
+    disp(['Number of frames: ' num2str( hSI.hStackManager.framesPerSlice )]);
+
+    %hSI.hFastZ.numVolumes = int32(ceil( trial_time * volumes_per_second ));
+    %disp(['Number of volumes: ' num2str( hSI.hFastZ.numVolumes )]);
     
     hSI.hScan2D.logFileStem = data;      % set the base file name for the Tiff file    
     hSI.hChannels.loggingEnable = true;     % enable logging   
