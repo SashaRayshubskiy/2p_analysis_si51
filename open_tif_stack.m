@@ -1,4 +1,4 @@
-function [ aOut ] = open_tif_fast( tifpath )
+function [ aOut ] = open_tif_stack( tifpath )
 % Output: [Lines, Pixels, Channels, Planes, Volumes]
 
 % Open tiff file
@@ -40,7 +40,10 @@ for idx = 1:numImg
     aOut_tmp(:,:,idx) = tifObj.read();
 end
 
-aOut = reshape( aOut_tmp, [ numLines, numPixels, num_channels, num_planes, num_volumes ] );
+xx = 700*2*11;
+
+% aOut = reshape( aOut_tmp, [ numLines, numPixels, num_channels(2), num_planes, num_volumes ] );
+aOut = reshape( aOut_tmp(:,:,1:xx), [ numLines, numPixels, 2, 700, 11 ] );
 
 tifObj.close();
 end
